@@ -31,8 +31,8 @@
 #define WRAP 1000
 #define DIV_CLK 250
 
-#define WIFI_SSID "Galaxy A23 77BF"
-#define WIFI_PASS "qfdc4141"
+#define WIFI_SSID "NOME_SSID"
+#define WIFI_PASS "SENHA_WIFI"
 
 // Limites padrão de cada grandeza
 #define TEMPERATURA_STD_MIN 0
