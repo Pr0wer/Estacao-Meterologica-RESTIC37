@@ -31,7 +31,7 @@
 #define WRAP 1000
 #define DIV_CLK 250
 
-#define WIFI_SSID "NOME_SSID"
+#define WIFI_SSID "NOME_WIFI"
 #define WIFI_PASS "SENHA_WIFI"
 
 // Limites padrão de cada grandeza
@@ -47,7 +47,7 @@
 
 #define SENSOR_READ_INTERVAL 1000000
 
-#define SEA_LEVEL_PRESSURE 101325.0 // Pressão ao nível do mar em Pa
+#define SEA_LEVEL_PRESSURE 102000.0 // Pressão ao nível do mar em Pa
 
 #define botaoB 6
 
@@ -178,18 +178,20 @@ int main()
     // Inicializa o Wi-Fi e o servidor web
     if (cyw43_arch_init())
     {   
-        printf("Wi-Fi falhou! 1\n");
+        printf("Falha na inicialização do CYW43\n");
         return 1;
     }
-    printf("CYW43 init\n");
+    printf("CYW43 inicializado\n");
+    sleep_ms(500);
 
     cyw43_arch_enable_sta_mode();
     if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASS, CYW43_AUTH_WPA2_AES_PSK, 10000))
     {   
-        printf("Wi-Fi falhou! 2\n");
+        printf("Timeout na autenticação com Wi-Fi\n");
         return 1;
     }
-    printf("CYW43 sta mode\n");
+    printf("Conectado ao Wi-Fi\n");
+    sleep_ms(500);
 
     uint8_t *ip = (uint8_t *)&(cyw43_state.netif[0].ip_addr.addr);
     printf("%d.%d.%d.%d\n", ip[0], ip[1], ip[2], ip[3]);
@@ -390,8 +392,6 @@ static void matriz_draw_graph()
     for (int i = 0; i < NUM_GRANDEZA; i++)
     {   
         Rgb cor = grandeza[i].passouLim ? cor_warn : grandeza[i].corLed;
-        uint8_t altura = mapear_grandeza_matriz(i);
-
         if (altura != grandeza[i].currAlturaMatriz || !is_same_color(cor, grandeza[i].currCorMatriz))
         {
             matriz_draw_coluna(4, coluna, 5, matriz_get_cor(APAGADO));
